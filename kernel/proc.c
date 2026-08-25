@@ -171,6 +171,11 @@ freeproc(struct proc *p)
   p->chan = 0;
   p->killed = 0;
   p->xstate = 0;
+
+  //modified for lottery scheduler
+  p->tickets = 0;
+  p->runtime_ticks = 0;
+  // End of modification
   p->state = UNUSED;
 }
 
