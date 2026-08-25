@@ -124,7 +124,10 @@ allocproc(void)
 found:
   p->pid = allocpid();
   p->state = USED;
+
+  // lottery scheduler moment
   p->tickets = 100;
+  p->runtime_ticks = 0;
 
   // Allocate a trapframe page.
   if ((p->trapframe = (struct trapframe *)kalloc()) == 0) {
