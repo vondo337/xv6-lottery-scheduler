@@ -5,6 +5,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#include "pinfo.h"
 
 struct cpu cpus[NCPU];
 
@@ -761,4 +762,31 @@ procdump(void)
     printk("%d %s %s", p->pid, state, p->name);
     printk("\n");
   }
+}
+
+// Modification by adding kernel function to collect process information 
+int
+getpinfo(struct pinfo *info){
+  struct proc *p;
+  int i = 0;
+
+  for(p = proc; p < &proc[NPROC]; p++, i++){
+    acquire(&p->lock);
+
+    if(p->state != UNUSED){
+      info->inuse[i] = 1;
+      info->pid[i] = p->pid;
+      info->tickets[i] = p->tickets;
+      info->runtime_ticks[i] = p->runtime_ticks;
+    }
+    else{
+      info->inuse[i] = 0;
+      info->pid[i] = 0;
+      info->tickets[i] = 0;
+      info->runtime_ticks[i] = 0;
+    }
+
+    release(&p->lock);
+  }
+  return 0;
 }

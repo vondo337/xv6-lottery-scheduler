@@ -24,3 +24,4 @@
 
 // Modification to add set_tickets
 #define SYS_settickets 23
+#define SYS_getpinfo 24

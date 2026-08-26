@@ -108,6 +108,9 @@ extern uint64 sys_sync(void);
 // Modification to add set_tickets
 extern uint64 sys_settickets(void);
 
+// Modification to add getpinfo function
+extern uint64 sys_getpinfo(void); 
+
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
 static uint64 (*syscalls[])(void) = {
@@ -137,7 +140,10 @@ static uint64 (*syscalls[])(void) = {
 
   // Modification to add set_tickets
   [SYS_settickets] = sys_settickets,
-  
+
+  // Modification to add getpinfo function
+  [SYS_getpinfo] = sys_getpinfo,
+
   // clang-format on
 };
 

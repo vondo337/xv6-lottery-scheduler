@@ -27,6 +27,10 @@ int uptime(void);
 int sync(void);
 int settickets(int); // Modification to add settickets system call
 
+// Modification to add getpinfo system call
+struct pinfo;
+int getpinfo(struct pinfo*); 
+
 // ulib.c
 int stat(const char *, struct stat *);
 char *strcpy(char *, const char *);

@@ -6,6 +6,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "vm.h"
+#include "pinfo.h" // Modification to add pinfo struct
 
 uint64
 sys_exit(void)
@@ -130,5 +131,23 @@ sys_settickets(void){
   p->tickets = tickets;
   release(&p->lock);
 
+  return 0;
+}
+
+// Modification to add sys_getpinfo function
+uint64
+sys_getpinfo(void){
+  uint64 user_addr;
+  struct pinfo info;
+
+  argaddr(0, &user_addr); // first argument from user space
+
+  // Gathering info from the process table
+  if(getpinfo(&info) < 0)
+    return -1;
+  
+  // copying the info from the kernel to the user space
+  if(copyout(myproc()->pagetable, user_addr, 0, (char *)&info, sizeof(info)) < 0)
+    return -1;
   return 0;
 }
