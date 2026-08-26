@@ -13,6 +13,12 @@ struct proc proc[NPROC];
 struct proc *initproc;
 
 int nextpid = 1;
+
+// modification for lottery scheduler 
+
+static uint lottery_seed = 123456789;
+
+
 struct spinlock pid_lock;
 
 extern void forkret(void);
@@ -25,6 +31,14 @@ extern char trampoline[]; // trampoline.S
 // memory model when using p->parent.
 // must be acquired before any p->lock.
 struct spinlock wait_lock;
+
+// PRNG function for lottery scheduler 
+
+static uint __attribute__((unused))
+lottery_rand(void){
+  lottery_seed = lottery_seed * 1664525 + 1013904223;
+  return lottery_seed;
+}
 
 // Allocate a page for each process's kernel stack.
 // Map it high in memory, followed by an invalid
