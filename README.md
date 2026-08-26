@@ -7,7 +7,7 @@ Ahmed Ishmam Arefin - 2322035642
 ## Overview
 
 This project replaces the default Round Robin scheduler in xv6
-with a lottery scheduling algorithm as we were taught in the CSE323 Operating Systems Design course.
+with a lottery scheduling algorithm as taught in the CSE323 Operating Systems Design course.
 
 Each process is assigned a number of tickets. At every scheduling
 round, the scheduler randomly selects a winning ticket, and the
