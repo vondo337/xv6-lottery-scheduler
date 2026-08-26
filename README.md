@@ -39,5 +39,10 @@ distribution over repeated runs.
 - QEMU
 - Ubuntu/WSL
 
+## Usage
+Compile xv6 to boot it up in Ubuntu/wsl environment.
+`make clean`
+`make qemu`
+
 ## Screenshot
 <img width="540" height="588" alt="image" src="https://github.com/user-attachments/assets/c8b687a0-9ad0-4ce0-beff-ec644d40ad65" />
