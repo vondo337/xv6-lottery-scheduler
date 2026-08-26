@@ -452,6 +452,10 @@ void
 scheduler(void)
 {
   struct proc *p;
+
+  // Structure declaration for winner process in lottery scheduler
+  struct proc *winner_proc;
+
   struct cpu *c = mycpu();
 
   c->proc = 0;
@@ -464,30 +468,66 @@ scheduler(void)
     intr_on();
     intr_off();
 
+    // Initialized total_tickets to 0 for each scheduling round
+    int total_tickets = 0;
+
     int found = 0;
     for (p = proc; p < &proc[NPROC]; p++) {
       acquire(&p->lock);
       if (p->state == RUNNABLE) {
-        // Switch to chosen process.  It is the process's job
-        // to release its lock and then reacquire it
-        // before jumping back to us.
-        p->state = RUNNING;
-        c->proc = p;
-        swtch(&c->context, &p->context);
-
-        // Don't re-enable interrupts on release.
-        mycpu()->intena = 0;
-
-        // Process is done running for now.
-        // It should have changed its p->state before coming back.
-        c->proc = 0;
+        // Increment total_tickets by the number of tickets in the current process
+        total_tickets += p->tickets;
         found = 1;
+
+        // // Switch to chosen process.  It is the process's job
+        // // to release its lock and then reacquire it
+        // // before jumping back to us.
+        // p->state = RUNNING;
+        // c->proc = p;
+        // swtch(&c->context, &p->context);
+
+        // // Don't re-enable interrupts on release.
+        // mycpu()->intena = 0;
+
+        // // Process is done running for now.
+        // // It should have changed its p->state before coming back.
+        // c->proc = 0;
+        // found = 1;
       }
       release(&p->lock);
     }
-    if (found == 0) {
+    if (found == 0 || total_tickets <= 0) {
       // nothing to run; stop running on this core until an interrupt.
       asm volatile("wfi");
+    }
+    // Draw the lottery of random number between 1 and total_tickets
+    int winning_ticket = lottery_rand() % total_tickets;
+  
+    // Find the process that owns the winning ticket
+    int current_ticket = 0;
+    winner_proc = 0;
+    for(p = proc; p < &proc[NPROC]; p++){
+      acquire(&p->lock);
+      if (p->state == RUNNABLE) {
+        current_ticket += p->tickets;
+  
+        // this process owns the winning ticket, so we can break out of the loop
+        if (current_ticket > winning_ticket) {
+          winner_proc = p;
+          break;
+        }
+      }
+      release(&p->lock);
+    }
+  
+    // Time to run the winning process
+    if(winner_proc != 0){
+      winner_proc->state = RUNNING;
+      c->proc = winner_proc;
+      swtch(&c->context, &winner_proc->context);
+  
+      c->proc = 0;
+      release(&winner_proc->lock);
     }
   }
 }
