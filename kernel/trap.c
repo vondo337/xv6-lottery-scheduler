@@ -82,8 +82,17 @@ usertrap(void)
     kexit(-1);
 
   // give up the CPU if this is a timer interrupt.
-  if (which_dev == 2)
+  if (which_dev == 2){
+    // incrementing the runtime before the process gives up the CPU
+    // tracking process runtime via timer ticks
+    struct proc *p = myproc();
+    if(p != 0){
+      acquire(&p->lock);
+      p->runtime_ticks++;
+      release(&p->lock);
+    }
     yield();
+  }
 
   prepare_return();
 
