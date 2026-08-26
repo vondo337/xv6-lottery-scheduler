@@ -23,6 +23,7 @@ sub entry {
 	
 entry("fork");
 entry("exit");
+entry("settickets"); # Modification to add settickets syscall
 entry("wait");
 entry("pipe");
 entry("read");

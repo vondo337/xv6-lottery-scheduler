@@ -110,3 +110,25 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+
+// Modification to add sys_settickets function
+uint64
+sys_settickets(void){
+  int tickets;
+
+  argint(0, &tickets); // first argument from user space
+
+  // process needs to have at least 1 ticket
+  if(tickets < 1)
+    return -1;
+  
+  // changing the ticket count of the current process
+  struct proc *p = myproc();
+
+  acquire(&p->lock);
+  p->tickets = tickets;
+  release(&p->lock);
+
+  return 0;
+}
