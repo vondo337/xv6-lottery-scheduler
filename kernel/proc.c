@@ -34,7 +34,7 @@ struct spinlock wait_lock;
 
 // PRNG function for lottery scheduler 
 
-static uint __attribute__((unused))
+static uint
 lottery_rand(void){
   lottery_seed = lottery_seed * 1664525 + 1013904223;
   return lottery_seed;
