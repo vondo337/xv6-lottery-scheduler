@@ -500,6 +500,7 @@ scheduler(void)
     if (found == 0 || total_tickets <= 0) {
       // nothing to run; stop running on this core until an interrupt.
       asm volatile("wfi");
+      continue;
     }
     // Draw the lottery of random number between 1 and total_tickets
     int winning_ticket = lottery_rand() % total_tickets;
@@ -523,6 +524,8 @@ scheduler(void)
   
     // Time to run the winning process
     if(winner_proc != 0){
+      // printk("Lottery: PID %d tickets %d won\n", winner_proc->pid, winner_proc->tickets); // debug...
+
       winner_proc->state = RUNNING;
       c->proc = winner_proc;
       swtch(&c->context, &winner_proc->context);

@@ -147,7 +147,7 @@ sys_getpinfo(void){
     return -1;
   
   // copying the info from the kernel to the user space
-  if(copyout(myproc()->pagetable, user_addr, 0, (char *)&info, sizeof(info)) < 0)
+  if(copyout(myproc()->pagetable, myproc()->sz, user_addr, (char *)&info, sizeof(info)) < 0)
     return -1;
   return 0;
 }
