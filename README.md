@@ -44,7 +44,7 @@ Compile xv6 to boot it up in Ubuntu/wsl environment.
 `make clean`
 `make qemu`
 
-## Demonstration
+## Visual Representation
 
 ![Lottery Scheduler Demo](assets/scheduler-demo.gif)
 
