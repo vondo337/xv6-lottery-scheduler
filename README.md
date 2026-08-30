@@ -1,7 +1,6 @@
 # Lottery Scheduler for xv6
 
-## Project Demo Link
-https://www.youtube.com/watch?v=Fk0A9ABTPuE
+
 
 ## Author
 
@@ -15,6 +14,7 @@ with a lottery scheduling algorithm as taught in the CSE323 Operating Systems De
 Each process is assigned a number of tickets. At every scheduling
 round, the scheduler randomly selects a winning ticket, and the
 corresponding process receives the CPU.
+[Demo Video Link](https://www.youtube.com/watch?v=Fk0A9ABTPuE)
 
 ## Features
 
