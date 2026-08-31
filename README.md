@@ -42,10 +42,16 @@ distribution over repeated runs.
 - QEMU
 - Ubuntu/WSL
 
+## Installation
+Compile xv6 to boot it up in Linux environment.
+```
+git clone https://github.com/vondo337/xv6-lottery-scheduler.git
+cd xv6-lottery-scheduler
+make clean
+make qemu
+```
 ## Usage
-Compile xv6 to boot it up in Ubuntu/wsl environment.
-`make clean`
-`make qemu`
+Run `lotterytest` to test the program after you successfully boot xv6.
 
 ## Visual Representation
 
